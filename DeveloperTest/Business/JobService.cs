@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using DeveloperTest.Business.Interfaces;
 using DeveloperTest.Database;
 using DeveloperTest.Database.Models;
 using DeveloperTest.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DeveloperTest.Business
 {
@@ -21,7 +23,8 @@ namespace DeveloperTest.Business
             {
                 JobId = x.JobId,
                 Engineer = x.Engineer,
-                When = x.When
+                When = x.When,
+                CustomerId = x.CustomerId ?? null
             }).ToArray();
         }
 
@@ -31,16 +34,18 @@ namespace DeveloperTest.Business
             {
                 JobId = x.JobId,
                 Engineer = x.Engineer,
-                When = x.When
+                When = x.When,
+                CustomerId= x.CustomerId
             }).SingleOrDefault();
         }
 
-        public JobModel CreateJob(BaseJobModel model)
+        public JobModel CreateJob([FromBody] BaseJobModel model)
         {
             var addedJob = context.Jobs.Add(new Job
             {
                 Engineer = model.Engineer,
-                When = model.When
+                When = model.When,
+                CustomerId = string.IsNullOrEmpty(model.CustomerId) ? (int?)null : int.Parse(model.CustomerId)
             });
 
             context.SaveChanges();
@@ -49,7 +54,8 @@ namespace DeveloperTest.Business
             {
                 JobId = addedJob.Entity.JobId,
                 Engineer = addedJob.Entity.Engineer,
-                When = addedJob.Entity.When
+                When = addedJob.Entity.When,
+                CustomerId = addedJob.Entity.CustomerId
             };
         }
     }

@@ -4,14 +4,16 @@ using DeveloperTest.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DeveloperTest.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200729235919_AddCustomerToDB")]
+    partial class AddCustomerToDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,9 +48,6 @@ namespace DeveloperTest.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Engineer")
                         .HasColumnType("nvarchar(max)");
 
@@ -57,8 +56,6 @@ namespace DeveloperTest.Migrations
 
                     b.HasKey("JobId");
 
-                    b.HasIndex("CustomerId");
-
                     b.ToTable("Jobs");
 
                     b.HasData(
@@ -66,15 +63,8 @@ namespace DeveloperTest.Migrations
                         {
                             JobId = 1,
                             Engineer = "Test",
-                            When = new DateTime(2020, 7, 30, 12, 17, 1, 80, DateTimeKind.Local).AddTicks(5131)
+                            When = new DateTime(2020, 7, 30, 0, 59, 19, 434, DateTimeKind.Local).AddTicks(4326)
                         });
-                });
-
-            modelBuilder.Entity("DeveloperTest.Database.Models.Job", b =>
-                {
-                    b.HasOne("DeveloperTest.Database.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId");
                 });
 #pragma warning restore 612, 618
         }
